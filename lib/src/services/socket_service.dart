@@ -16,26 +16,19 @@ class SocketService with ChangeNotifier {
 
   void _initConfig() {
     // Dart client
-    this._socket = IO.io('http://localhost:3000', {
+    this._socket = IO.io('http://localhost:3000/', {
       "transports": ['websocket'],
       "autoConnect": true,
     });
 
-    this._socket.on("connect", (_) {
+    this._socket.onConnect((_) {
       this._serverStatus = ServerStatus.Online;
       notifyListeners();
     });
 
-    this._socket.on("disconnect", (_) {
+    this._socket.onDisconnect((_) {
       this._serverStatus = ServerStatus.Offline;
       notifyListeners();
     });
-
-    /*socket.on("nuevo-mensaje", (payload) {
-      print("nuevo mensaje $payload");
-      print("nombre: " + payload["nombre"]);
-      print(
-          payload.containsKey("mensaje2") ? payload["mensaje2"] : " no viene ");
-    });*/
   }
 }
